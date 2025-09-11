@@ -65,12 +65,11 @@ resource "aws_route_table_association" "my_subnet_assoc" {
 
 # security_group ------------------------------------------------------
 
-
 resource "aws_security_group" "security_group" {
   name        = "terraform-security-groups"
   description = "this is for terraform security"
   vpc_id      = aws_vpc.my_vpc.id #interpolatoin : is a way inwhich you can inherit  or extract value from terrafrom block  it's also called dot object notesion    
-
+  
 
   #inbound rule 
   ingress {
@@ -108,6 +107,7 @@ resource "aws_security_group" "security_group" {
   }
 }
 
+# instance-----------------------------------
 resource "aws_instance" "demo" {
   # let's use forfor_each 
   # for_each = tomap({
@@ -124,6 +124,11 @@ resource "aws_instance" "demo" {
       instance_type = "t2.nano"
       ami           = "ami-00ca32bbc84273381" #amazon
     }
+     third_instance = {
+      instance_type = "t2.small"
+      ami           = "ami-00ca32bbc84273381" #amazon
+    }
+   
   }
   depends_on = [aws_security_group.security_group, aws_key_pair.keys]
 
@@ -153,4 +158,8 @@ resource "aws_instance" "demo" {
   }
 }
 
-
+# # import practise from aws exsiting resource here we will import exsiting instance from aws 
+# resource "aws_instance" "import_new_ec2_from_aws" {
+#   instance_type = "unkown"
+#   ami           = "unknown"
+# }

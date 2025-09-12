@@ -7,7 +7,7 @@ variable "ec2_default_size" {
   default = 8
   type    = number
 }
-
+   
 
 # environment varaible\
 variable "env" {

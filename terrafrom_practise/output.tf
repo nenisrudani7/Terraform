@@ -14,5 +14,5 @@
 output "ec2_public_ip" {
   value = [
     for instance_ip in aws_instance.demo : instance_ip.public_ip
-  ]
+  ] 
 }

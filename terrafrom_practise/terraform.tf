@@ -13,3 +13,6 @@ terraform {
     dynamodb_table = "practise"
   }
 }
+
+
+# BUCKET NAME == testing-terraform-bucket"

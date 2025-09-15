@@ -12,3 +12,6 @@ terraform-key
 terraform-key.pub.terraform/
 .terraform.lock.hcl
 terraform.tfstate*
+*.pub
+terraform_workspace
+

@@ -6,12 +6,12 @@ terraform {
     }
   }
 
-  backend "s3" {
-    bucket         = "bucket-tfstatefile123"
-    key            = "terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "practise"
-  }
+  # backend "s3" {
+  #   bucket         = "bucket-tfstatefile123"
+  #   key            = "terraform.tfstate"
+  #   region         = "us-east-1"
+  #   dynamodb_table = "practise"
+  # }
 }
 
 

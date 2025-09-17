@@ -2,7 +2,7 @@
 .terraform/
 .terraform.lock.hcl
 *.tfstate
-*.tfstate.*
+.tfstate.*
 crash.log
 override.tf
 override.tf.json
@@ -12,3 +12,4 @@ terraform-key
 terraform-key.pub.terraform/
 .terraform.lock.hcl
 terraform.tfstate*
+*.pub

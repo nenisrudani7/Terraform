@@ -3,7 +3,7 @@
 # ssh-key
 resource "aws_key_pair" "keys" {
   key_name   = "key_pair"
-  public_key = file("terraform-key.pub")
+  public_key = file("/home/nenis/work/terraform_practise/terrafrom_practise/terraform-key.pub")
 }
 
 #VPC------------------------------------------------------------------

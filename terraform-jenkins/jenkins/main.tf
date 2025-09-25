@@ -42,3 +42,5 @@ resource "aws_key_pair" "jenkins_ec2_instance_public_key" {
   key_name   = "aws_ec2_terraform"
   public_key = var.public_key
 }
+ 
+  

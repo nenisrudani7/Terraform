@@ -16,3 +16,8 @@ output "ec2_public_ip" {
     for instance_ip in aws_instance.demo : instance_ip.public_ip
   ] 
 }
+output "ec2_instance_id" {
+  value = [
+    for instance in aws_instance.demo : instance.id
+  ]
+}

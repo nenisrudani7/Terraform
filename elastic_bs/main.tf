@@ -63,6 +63,7 @@ resource "aws_elastic_beanstalk_environment" "tf_test_env" {
   version_label       = aws_elastic_beanstalk_application_version.my_app_version.name
   tier                = "WebServer"
 
+for_each = [ "value" ]
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
@@ -99,3 +100,5 @@ resource "aws_elastic_beanstalk_environment" "tf_test_env" {
     value     = "public"
   }
 }
+
+

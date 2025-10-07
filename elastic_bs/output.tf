@@ -4,3 +4,4 @@ output "url" {
 output "domain" {
     value = aws_elastic_beanstalk_environment.tf_test_env.cname
 }
+

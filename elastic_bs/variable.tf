@@ -35,3 +35,4 @@ variable "app_zip_path" {
   description = "Path to your application ZIP file"
   default     = "/home/nenis/work/terraform_practise/elastic_bs/zip/index.zip"
   }
+

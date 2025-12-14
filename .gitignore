@@ -14,3 +14,4 @@ terraform-key.pub.terraform/
 terraform.tfstate*
 *.pub
 *.tfvars
+plain.txt

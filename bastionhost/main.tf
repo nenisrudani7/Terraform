@@ -15,7 +15,11 @@ module "ssh-key"{
   key_path = "./modules/ssh-key/bastionhost.pub"
   key_name = "bastion-key_pair"
 }
-
+module "ssh-key-main"{
+  source = "./modules/ssh-key"
+  key_path = "./modules/ssh-key/mainec2.pub"
+  key_name = "main-key_pair"
+}
 #  
 module "vpc" {
   source = "./modules/vpc"

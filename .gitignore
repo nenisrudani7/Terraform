@@ -16,4 +16,6 @@ terraform.tfstate*
 *.tfvars
 plain.txt
 bastionhost/provider.tf
-secret.txt      
+secret.txt 
+**/provider.tf   
+eks-me/provider.tf

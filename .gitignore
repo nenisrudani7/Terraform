@@ -18,6 +18,6 @@ plain.txt
 bastionhost/provider.tf
 secret.txt 
 **/provider.tf   
-eks-me/provider.tf
+eks_me/provider.tf
 
 

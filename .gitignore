@@ -19,3 +19,5 @@ bastionhost/provider.tf
 secret.txt 
 **/provider.tf   
 eks-me/provider.tf
+
+

@@ -16,3 +16,9 @@ module "security_group" {
   inbound_ports       = var.inbound_ports
   vpc_id              = module.vpc.vpc_id
 }
+
+module "eks" {
+  source       = "./modules/eks"
+  cluster_name = var.cluster_name
+  subnet_ids   = module.vpc.subnet_id
+}

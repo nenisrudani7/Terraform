@@ -32,3 +32,7 @@ variable "egress_cidr_blocks" {
 variable "inbound_ports" {
   type = list(number)
 }
+# eks--------------
+variable "cluster_name" {
+  type = string
+}

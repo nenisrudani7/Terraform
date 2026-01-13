@@ -18,6 +18,7 @@ resource "aws_iam_role" "eks_cluster_role" {
   })
   tags = {
         mode = "precta"
+        tag-key = "eks-cluster-demo"
     }
 }
 

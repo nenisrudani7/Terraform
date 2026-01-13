@@ -29,9 +29,12 @@ resource "aws_subnet" "public_subnet_az1" {
   availability_zone       = data.aws_availability_zones.available_zones.names[0]
   map_public_ip_on_launch = true
 
-  tags = {
-    mode = "precta"
-  }
+tags = {
+  mode = "precta"
+  "kubernetes.io/cluster/${var.project_name}_cluster" = "shared"
+  "kubernetes.io/role/elb" = "1"
+}
+
 }
 
 resource "aws_subnet" "public_subnet_az2" {

@@ -4,6 +4,8 @@ locals {
 }
 
 
+# IAM role for eks
+
 resource "aws_iam_role" "eks_cluster_role" {
   name = "${var.project_name}_eks_cluster_role"
   assume_role_policy = jsonencode({
@@ -62,6 +64,14 @@ resource "aws_iam_role_policy_attachment" "AWSCSIProvisionerRolePolicy_cluster" 
 }
 
 resource "aws_iam_role_policy_attachment" "AWSCSIProvisionerRolePolicy_node" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
   role       = aws_iam_role.node_role.name
 }
+
+resource "aws_iam_role_policy_attachment" "demo-AmazonEKSClusterPolicy" {
+  role       = aws_iam_role.eks_cluster_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
+
+
+

@@ -134,14 +134,14 @@ resource "aws_iam_role_policy_attachment" "AmazonEFSCSIDriverPolicy" {
 resource "aws_eks_addon" "efs_csi" {
   cluster_name             = aws_eks_cluster.precta_dev.name
   addon_name               = "aws-efs-csi-driver"
-  addon_version            = "v2.2.0-eksbuild.1"
+  # addon_version            = "v2.2.0-eksbuild.1"
   service_account_role_arn = aws_iam_role.efs_csi.arn
 }
 
 resource "aws_eks_addon" "ebs_csi" {
   cluster_name             = aws_eks_cluster.precta_dev.name
   addon_name               = "aws-ebs-csi-driver"
-  addon_version            = "v1.54.1-eksbuild.1"
+  # addon_version            = "v1.52.1-eksbuild.1"
   service_account_role_arn = aws_iam_role.ebs_csi.arn
 }
 
@@ -149,5 +149,5 @@ resource "aws_eks_addon" "vpc_cni" {
   cluster_name                = aws_eks_cluster.precta_dev.name
   addon_name                  = "vpc-cni"
   resolve_conflicts_on_create = "OVERWRITE"
-  addon_version               = "v1.19.5-eksbuild.1"
+  # addon_version               = "v1.19.5-eksbuild.1"
 }

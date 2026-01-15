@@ -25,8 +25,13 @@ variable "vpc_cidr" {}
 
 variable "public_subnet_az1_cidr" {}
 
-variable "private_subnet_az1_cidr" {}
+variable "private_subnet_az1_cidr" {
+  type = string
+}
 
+variable "private_subnet_az2_cidr" {
+  type = string
+}
 
 
 
@@ -38,3 +43,9 @@ variable "enable_nat_gateway" {
 # variable "vpc_id" {
 #   type = string
 # }
+variable "aws_access_key" {
+  type = string
+}
+variable "aws_secret_key" {
+  type = string
+}

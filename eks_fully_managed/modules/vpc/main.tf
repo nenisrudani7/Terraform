@@ -93,6 +93,20 @@ tags = {
 }
 
 }
+resource "aws_subnet" "private_subnet_az2" {
+  vpc_id                  = aws_vpc.precta.id
+  cidr_block              = var.private_subnet_az2_cidr
+  availability_zone       = data.aws_availability_zones.available_zones.names[1]
+  map_public_ip_on_launch = false
+
+tags = {
+  mode = "precta-1"
+  "kubernetes.io/cluster/${var.project_name}_cluster" = "shared"
+  "kubernetes.io/role/internal-elb" = "1"
+}
+
+}
+
 
 
 resource "aws_eip" "nat" {
@@ -100,7 +114,7 @@ resource "aws_eip" "nat" {
   tags = {
     Name = "${var.project_name}-eip"
   }
-}
+}  
 
 //---------------------------------------------------------------------------------------------
 resource "aws_nat_gateway" "nat_gw" {
@@ -111,14 +125,6 @@ resource "aws_nat_gateway" "nat_gw" {
     mode = "precta"
   }
 }
-
-# resource "aws_route" "private_nat_gateway" {
-#   count                  = var.enable_nat_gateway ? 1 : 0
-#   route_table_id         = aws_route_table.private_nat.id
-#   destination_cidr_block = "0.0.0.0/0"
-#   nat_gateway_id         = aws_nat_gateway.nat_gw.id
-# }
-
 
 //---------------------------------------------------------------------------------------------
 resource "aws_route_table" "private_route_table" {
@@ -134,9 +140,12 @@ resource "aws_route_table" "private_route_table" {
 }
 
 
-
 resource "aws_route_table_association" "private_nat_az1" {
   subnet_id      = aws_subnet.private_subnet_az1.id
   route_table_id = aws_route_table.private_route_table.id
 }
 
+resource "aws_route_table_association" "private_nat_az2" {
+  subnet_id      = aws_subnet.private_subnet_az2.id
+  route_table_id = aws_route_table.private_route_table.id
+}

@@ -1,13 +1,12 @@
 module "vpc" {
-  source                 = "./modules/vpc"
-  vpc_id                 = module.vpc.vpc_id
-  region                 = var.region
-  project_name           = var.project_name
-  vpc_cidr               = var.vpc_cidr
-  public_subnet_az1_cidr = var.public_subnet_az1_cidr
-  public_subnet_az2_cidr = var.public_subnet_az2_cidr
-
+  source                  = "./modules/vpc"
+  region                  = var.region
+  project_name            = var.project_name
+  vpc_cidr                = var.vpc_cidr
+  public_subnet_az1_cidr  = var.public_subnet_az1_cidr
+  public_subnet_az2_cidr  = var.public_subnet_az2_cidr
   private_subnet_az1_cidr = var.private_subnet_az1_cidr
+  private_subnet_az2_cidr = var.private_subnet_az2_cidr
   enable_nat_gateway      = var.enable_nat_gateway
 }
 
@@ -15,8 +14,8 @@ module "precta" {
   source               = "./modules/eks"
   module_name          = "eks_precta_custer"
   project_name         = var.project_name
-  subnet_ids           = [module.vpc.private_subnet_az1, module.vpc.public_subnet_az1, module.vpc.public_subnet_az2]
-  eks_version          = "1.32"
+  subnet_ids           = [module.vpc.private_subnet_az1, module.vpc.private_subnet_az2, module.vpc.public_subnet_az1, module.vpc.public_subnet_az2]
+  eks_version          = "1.29"
   desired_size         = var.desired_size
   nodegroup_subnet_ids = [module.vpc.private_subnet_az1]
   min_size             = var.min_size

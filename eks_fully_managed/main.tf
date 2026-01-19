@@ -15,7 +15,7 @@ module "precta" {
   module_name          = "eks_precta_custer"
   project_name         = var.project_name
   subnet_ids           = [module.vpc.private_subnet_az1, module.vpc.private_subnet_az2, module.vpc.public_subnet_az1, module.vpc.public_subnet_az2]
-  eks_version          = "1.29"
+  eks_version          = "1.31" 
   desired_size         = var.desired_size
   nodegroup_subnet_ids = [module.vpc.private_subnet_az1]
   min_size             = var.min_size

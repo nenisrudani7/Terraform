@@ -54,12 +54,12 @@ data "aws_iam_policy_document" "ebs_csi_irsa" {
 
     principals {
       type        = "Federated"
-      identifiers = ["arn:aws:iam::127056275723:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/0B12270B9C4E484D081D2748A79D148F"]
+      identifiers = [aws_iam_openid_connect_provider.prectaoidc.arn]
     }
 
     condition {
       test     = "StringEquals"
-      variable = "oidc.eks.us-east-1.amazonaws.com/id/0B12270B9C4E484D081D2748A79D148F:sub"
+      variable = "${replace(aws_iam_openid_connect_provider.prectaoidc.url, "https://", "")}:sub"
 
       values = [
         "system:serviceaccount:kube-system:ebs-csi-controller-sa"
@@ -73,6 +73,8 @@ data "aws_iam_policy_document" "ebs_csi_irsa" {
 resource "aws_iam_role" "ebs_csi" {
   name               = "EBSIrsaDevCluster"
   assume_role_policy = data.aws_iam_policy_document.ebs_csi_irsa.json
+
+  depends_on = [aws_iam_openid_connect_provider.prectaoidc]
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEBSCSIDriverPolicy" {
@@ -105,12 +107,12 @@ data "aws_iam_policy_document" "efs_csi_irsa" {
 
     principals {
       type        = "Federated"
-      identifiers = ["arn:aws:iam::127056275723:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/0B12270B9C4E484D081D2748A79D148F"]
+      identifiers = [aws_iam_openid_connect_provider.prectaoidc.arn]
     }
 
     condition {
       test     = "StringEquals"
-      variable = "oidc.eks.us-east-1.amazonaws.com/id/0B12270B9C4E484D081D2748A79D148F:sub"
+      variable = "${replace(aws_iam_openid_connect_provider.prectaoidc.url, "https://", "")}:sub"
 
       values = [
         "system:serviceaccount:kube-system:efs-csi-controller-sa"
@@ -124,6 +126,8 @@ data "aws_iam_policy_document" "efs_csi_irsa" {
 resource "aws_iam_role" "efs_csi" {
   name               = "EFSIrsaDevCluster"
   assume_role_policy = data.aws_iam_policy_document.efs_csi_irsa.json
+
+  depends_on = [aws_iam_openid_connect_provider.prectaoidc]
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEFSCSIDriverPolicy" {
@@ -131,25 +135,40 @@ resource "aws_iam_role_policy_attachment" "AmazonEFSCSIDriverPolicy" {
   role       = aws_iam_role.efs_csi.name
 }
 
-# Temporarily disabled - requires proper IRSA with OIDC configuration
-# resource "aws_eks_addon" "efs_csi" {
-#   cluster_name             = aws_eks_cluster.precta_dev.name
-#   addon_name               = "aws-efs-csi-driver"
-#   # addon_version            = "v2.2.0-eksbuild.1"
-#   service_account_role_arn = aws_iam_role.efs_csi.arn
-# }
+resource "aws_eks_addon" "efs_csi" {
+  cluster_name             = aws_eks_cluster.precta_dev.name
+  addon_name               = "aws-efs-csi-driver"
+  service_account_role_arn = aws_iam_role.efs_csi.arn
+  resolve_conflicts_on_create = "OVERWRITE"
+}
 
-# Temporarily disabled - requires proper IRSA with OIDC configuration
-# resource "aws_eks_addon" "ebs_csi" {
-#   cluster_name             = aws_eks_cluster.precta_dev.name
-#   addon_name               = "aws-ebs-csi-driver"
-#   # addon_version            = "v1.52.1-eksbuild.1"
-#   service_account_role_arn = aws_iam_role.ebs_csi.arn
-# }
+resource "aws_eks_addon" "ebs_csi" {
+  cluster_name             = aws_eks_cluster.precta_dev.name
+  addon_name               = "aws-ebs-csi-driver"
+  service_account_role_arn = aws_iam_role.ebs_csi.arn
+  resolve_conflicts_on_create = "OVERWRITE"
+}
 
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name                = aws_eks_cluster.precta_dev.name
   addon_name                  = "vpc-cni"
   resolve_conflicts_on_create = "OVERWRITE"
-  # addon_version               = "v1.19.5-eksbuild.1"
+}
+
+resource "aws_eks_addon" "coredns" {
+  cluster_name                = aws_eks_cluster.precta_dev.name
+  addon_name                  = "coredns"
+  resolve_conflicts_on_create = "OVERWRITE"
+}
+
+resource "aws_eks_addon" "kube_proxy" {
+  cluster_name                = aws_eks_cluster.precta_dev.name
+  addon_name                  = "kube-proxy"
+  resolve_conflicts_on_create = "OVERWRITE"
+}
+
+resource "aws_eks_addon" "pod_identity_agent" {
+  cluster_name                = aws_eks_cluster.precta_dev.name
+  addon_name                  = "eks-pod-identity-agent"
+  resolve_conflicts_on_create = "OVERWRITE"
 }

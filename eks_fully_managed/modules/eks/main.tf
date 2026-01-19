@@ -17,7 +17,7 @@ module "eks_cluster_role" {
 
 
 resource "aws_eks_cluster" "precta_dev" {
-  name     = "${var.project_name}_cluster"
+  name     = "${var.project_name}-cluster"
   role_arn = module.eks_cluster_role.eks_cluster_role
   version  = var.eks_version
   enabled_cluster_log_types = ["audit", "api", "authenticator", "scheduler", "controllerManager"]
@@ -172,3 +172,9 @@ resource "aws_eks_addon" "pod_identity_agent" {
   addon_name                  = "eks-pod-identity-agent"
   resolve_conflicts_on_create = "OVERWRITE"
 }
+
+# resource "aws_eks_addon" "metrics_server" {
+#   cluster_name                = aws_eks_cluster.precta_dev.name
+#   addon_name                  = "metrics-server"
+#   resolve_conflicts_on_create = "OVERWRITE"
+# }

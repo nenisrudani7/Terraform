@@ -36,3 +36,6 @@ variable "instance_type" {
 
 
 variable "usage_label" {}
+# variable "disk_size" {
+#   type    = number
+# }

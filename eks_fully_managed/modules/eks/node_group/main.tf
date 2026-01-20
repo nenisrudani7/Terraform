@@ -4,12 +4,12 @@ locals {
 }
 
 resource "aws_eks_node_group" "demand_instance_nodegroup" {
-  cluster_name    = var.project_name
+  cluster_name    = var.cluster_name
   node_group_name = "${var.project_name}_demand_node_group"
   node_role_arn   = var.node_role_arn
   subnet_ids      = var.subnet_ids
   instance_types  = var.instance_type
-  disk_size       = 50
+  disk_size       = 150
   
   scaling_config {
     desired_size = var.desired_size

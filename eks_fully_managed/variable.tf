@@ -2,6 +2,9 @@ variable "project_name" {
   type = string
 }
 
+# variable "cluster_name" {
+#   type = string
+# }
 variable "desired_size" {
   type = number
 }
@@ -27,7 +30,7 @@ variable "public_subnet_az1_cidr" {}
 
 variable "private_subnet_az1_cidr" {
   type = string
-} 
+}
 
 variable "private_subnet_az2_cidr" {
   type = string
@@ -49,3 +52,9 @@ variable "aws_access_key" {
 variable "aws_secret_key" {
   type = string
 }
+
+# variable "disk_size" {
+#   type = number
+# }
+
+# variable "node_role_arn" {}

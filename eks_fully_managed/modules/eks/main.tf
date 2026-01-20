@@ -17,14 +17,13 @@ module "eks_cluster_role" {
 
 
 resource "aws_eks_cluster" "precta_dev" {
-  name     = "${var.project_name}-cluster"
+  name     = var.cluster_name
   role_arn = module.eks_cluster_role.eks_cluster_role
   version  = var.eks_version
   enabled_cluster_log_types = ["audit", "api", "authenticator", "scheduler", "controllerManager"]
   vpc_config {
     subnet_ids           = var.subnet_ids
     public_access_cidrs  = var.eks_public_access_cidrs
-  
   }
   depends_on = [module.eks_cluster_role]
 
@@ -46,6 +45,7 @@ module "demand_instance_nodegroup" {
   max_size      = var.max_size
   subnet_ids    = var.nodegroup_subnet_ids
   usage_label   = var.usage_label
+  depends_on = [aws_eks_cluster.precta_dev]
 }
 
 data "aws_iam_policy_document" "ebs_csi_irsa" {

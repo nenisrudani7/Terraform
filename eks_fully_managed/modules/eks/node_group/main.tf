@@ -16,7 +16,7 @@ resource "aws_eks_node_group" "demand_instance_nodegroup" {
     max_size     = var.max_size
     min_size     = var.min_size
   }
-  capacity_type = "ON_DEMAND"
+  capacity_type = ["ON_DEMAND" , "SPOT"]
   update_config {
     max_unavailable = 1
   }

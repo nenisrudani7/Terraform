@@ -13,6 +13,9 @@ module "eks_cluster_role" {
   source       = "./iam"
   project_name = var.project_name
   module_name  = "precta_role"
+  cluster_name = var.cluster_name
+  oidc_arn     = var.oidc_arn
+  oidc_url     = var.oidc_url
 }
 
 

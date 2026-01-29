@@ -71,6 +71,97 @@ resource "aws_iam_role_policy_attachment" "demo-AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
+
+
+# --------------for karpenter------------------
+resource "aws_iam_policy" "karpenter_controller" {
+  name        = "KarpenterControllerPolicy-${var.cluster_name}"
+  description = "Permissions for Karpenter controller"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:CreateLaunchTemplate",
+          "ec2:CreateFleet",
+          "ec2:RunInstances",
+          "ec2:CreateTags",
+          "ec2:TerminateInstances",
+          "ec2:Describe*",
+          "iam:PassRole",
+          "ssm:GetParameter",
+          "pricing:GetProducts"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# -----role for karpenter controller && Trust policy for ServiceAccount karpenter/karpenter-----  
+resource "aws_iam_role" "karpenter_controller" {
+  name = "KarpenterControllerRole-${var.cluster_name}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Federated = var.oidc_arn
+        }
+        Action = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "${replace(var.oidc_url, "https://", "")}:sub" = "system:serviceaccount:karpenter:karpenter"
+          }
+        }
+      }
+    ]
+  })
+}
+
+# -----------attach policy to karpenter role-----------
+resource "aws_iam_role_policy_attachment" "karpenter_controller_attach" {
+  role       = aws_iam_role.karpenter_controller.name
+  policy_arn = aws_iam_policy.karpenter_controller.arn
+}
+
+# --------karpenter node iam role-----
+resource "aws_iam_role" "karpenter_node" {
+  name = "KarpenterNodeRole-${var.cluster_name}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+
+# policy for node worker
+resource "aws_iam_role_policy_attachment" "node_worker" {
+  role       = aws_iam_role.karpenter_node.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+}
+
+
+resource "aws_iam_role_policy_attachment" "node_ecr" {
+  role       = aws_iam_role.karpenter_node.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+
+
 # bare minimum requirement of eks
 # # aws node group 
 # resource "aws_eks_node_group" "private-nodes" {

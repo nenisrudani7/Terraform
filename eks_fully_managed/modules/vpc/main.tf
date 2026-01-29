@@ -33,7 +33,7 @@ tags = {
   mode = "precta"
   "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   "kubernetes.io/role/elb" = "1" #why we use this tag? it is for aws to identify this subnet for load balancer and “This subnet is allowed for Public LoadBalancers”
-
+   "karpenter.sh/discovery" = var.cluster_name
 }
 
 }
@@ -48,6 +48,7 @@ tags = {
   mode = "precta"
   "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   "kubernetes.io/role/elb" = "1"
+  "karpenter.sh/discovery" = var.cluster_name
 }
 
 }
@@ -89,8 +90,9 @@ resource "aws_subnet" "private_subnet_az1" {
 
 tags = {
   mode = "precta"
-  "kubernetes.io/cluster/${var.project_name}_cluster" = "shared"
+  "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   "kubernetes.io/role/internal-elb" = "1"
+  "karpenter.sh/discovery" = var.cluster_name
 }
 
 }
@@ -102,8 +104,9 @@ resource "aws_subnet" "private_subnet_az2" {
 
 tags = {
   mode = "precta-1"
-  "kubernetes.io/cluster/${var.project_name}_cluster" = "shared"
+  "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   "kubernetes.io/role/internal-elb" = "1"
+  "karpenter.sh/discovery" = var.cluster_name
 }
 
 }

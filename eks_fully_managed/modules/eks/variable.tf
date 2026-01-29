@@ -52,3 +52,10 @@ variable "eks_public_access_cidrs" {
 # variable "disk_size" {
 #   type    = number
 # }
+
+variable "oidc_arn" {
+  type = string
+}
+variable "oidc_url" {
+  type = string
+}

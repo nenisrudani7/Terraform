@@ -25,6 +25,15 @@ module "precta" {
   max_size             = var.max_size
   instance_type        = ["t3.medium", "t3.large"]
   usage_label          = "precta"
+  oidc_arn             = "arn:aws:iam::887675945169:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/CD5C4D5C22FE4F17D80211C0B33D7582"
+  oidc_url             = "data.aws_eks_cluster.precta_dev.identity[0].oidc[0].issuer"
 }
 
- 
+ helm upgrade --install --namespace karpenter --create-namespace \
+  karpenter karpenter/karpenter \
+  --version 0.16.3 \
+  --set serviceAccount.annotations.eks\.amazonaws\.com/role-arn=arn:aws:iam::887675945169:role/KarpenterControllerRole-precta_cluster_eks \
+  --set clusterName=precta_cluster_eks \
+  --set clusterEndpoint=https://CD5C4D5C22FE4F17D80211C0B33D7582.gr7.us-east-1.eks.amazonaws.com \
+  --set aws.defaultInstanceProfile=KarpenterNodeInstanceProfile-precta_cluster_eks \
+  --wait # for the defaulting webhook to install before creating a Provisioner

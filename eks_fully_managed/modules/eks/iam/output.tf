@@ -6,9 +6,10 @@ output "node_role" {
   value = aws_iam_role.node_role.arn
 }
 
-output "oidc_arn" {
-  value = var.oidc_arn
+output "karpenter_policy_arn" {
+  value = aws_iam_policy.karpenter_controller.arn
 }
-output "oidc_url" {
-  value = var.oidc_url
+
+output "karpenter_node_role_arn" {
+  value = aws_iam_role.karpenter_node.arn
 }

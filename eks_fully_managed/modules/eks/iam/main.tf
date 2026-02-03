@@ -113,34 +113,8 @@ resource "aws_iam_policy" "karpenter_controller" {
   })
 }
 
-# -----role for karpenter controller && Trust policy for ServiceAccount karpenter/karpenter-----  
-resource "aws_iam_role" "karpenter_controller" {
-  name = "KarpenterControllerRole-${var.cluster_name}"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Federated = var.oidc_arn
-        }
-        Action = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "${replace(var.oidc_url, "https://", "")}:sub" = "system:serviceaccount:karpenter:karpenter"
-          }
-        }
-      }
-    ]
-  })
-}
-
-# -----------attach policy to karpenter role-----------
-resource "aws_iam_role_policy_attachment" "karpenter_controller_attach" {
-  role       = aws_iam_role.karpenter_controller.name
-  policy_arn = aws_iam_policy.karpenter_controller.arn
-}
+# Karpenter controller role is now created in the EKS module (modules/eks/main.tf)
+# to avoid circular dependency with OIDC provider
 
 # --------karpenter node iam role-----
 resource "aws_iam_role" "karpenter_node" {

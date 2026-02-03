@@ -25,8 +25,6 @@ module "precta" {
   max_size             = var.max_size
   instance_type        = ["t3.medium", "t3.large"]
   usage_label          = "precta"
-  oidc_arn             = "arn:aws:iam::887675945169:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/CD5C4D5C22FE4F17D80211C0B33D7582"
-  oidc_url             = "data.aws_eks_cluster.precta_dev.identity[0].oidc[0].issuer"
 }
 
 

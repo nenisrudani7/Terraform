@@ -47,15 +47,3 @@ variable "eks_public_access_cidrs" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
-
-# variable "node_role_arn" {}
-# variable "disk_size" {
-#   type    = number
-# }
-
-variable "oidc_arn" {
-  type = string
-}
-variable "oidc_url" {
-  type = string
-}

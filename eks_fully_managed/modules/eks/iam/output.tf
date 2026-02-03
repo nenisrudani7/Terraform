@@ -5,3 +5,10 @@ output "eks_cluster_role" {
 output "node_role" {
   value = aws_iam_role.node_role.arn
 }
+
+output "oidc_arn" {
+  value = var.oidc_arn
+}
+output "oidc_url" {
+  value = var.oidc_url
+}

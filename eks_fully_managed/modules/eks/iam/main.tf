@@ -84,15 +84,28 @@ resource "aws_iam_policy" "karpenter_controller" {
       {
         Effect = "Allow"
         Action = [
-          "ec2:CreateLaunchTemplate",
-          "ec2:CreateFleet",
-          "ec2:RunInstances",
-          "ec2:CreateTags",
-          "ec2:TerminateInstances",
-          "ec2:Describe*",
-          "iam:PassRole",
-          "ssm:GetParameter",
-          "pricing:GetProducts"
+           "ec2:CreateLaunchTemplate",
+           "ec2:CreateFleet",
+           "ec2:RunInstances",
+           "ec2:CreateTags",
+           "ec2:DescribeInstances",
+           "ec2:DescribeInstanceTypes",
+           "ec2:DescribeInstanceTypeOfferings",
+           "ec2:DescribeSubnets",
+           "ec2:DescribeSecurityGroups",
+           "ec2:DescribeImages",
+           "ec2:DescribeAvailabilityZones",
+           "ec2:DescribeLaunchTemplates",
+           "ec2:DescribeSpotPriceHistory",
+           "ec2:TerminateInstances",
+           "iam:PassRole",
+           "iam:GetInstanceProfile",
+           "iam:CreateInstanceProfile",
+           "iam:AddRoleToInstanceProfile",
+           "iam:RemoveRoleFromInstanceProfile",
+           "iam:DeleteInstanceProfile",
+           "eks:DescribeCluster",
+           "pricing:GetProducts"
         ]
         Resource = "*"
       }

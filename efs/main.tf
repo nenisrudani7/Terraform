@@ -74,4 +74,3 @@ variable "subnet_ids" {
 }
 
 # to crearte efs we need a vpc subnet and efs 
-#checking

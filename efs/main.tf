@@ -72,4 +72,6 @@ variable "subnet_ids" {
   type    = list(string)
   default = ["subnet-0be8637d2ab8bdcc8", "subnet-024117b4a50af80cc"]
 }
+
 # to crearte efs we need a vpc subnet and efs 
+#checking

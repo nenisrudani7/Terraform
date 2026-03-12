@@ -117,6 +117,7 @@ resource "aws_iam_policy" "karpenter_controller" {
 # to avoid circular dependency with OIDC provider
 
 # --------karpenter node iam role-----
+# -------- Karpenter Node IAM Role --------
 resource "aws_iam_role" "karpenter_node" {
   name = "KarpenterNodeRole-${var.cluster_name}"
 
@@ -132,21 +133,38 @@ resource "aws_iam_role" "karpenter_node" {
       }
     ]
   })
+
+  tags = {
+    mode = "precta"
+  }
 }
 
-
-# policy for node worker
-resource "aws_iam_role_policy_attachment" "node_worker" {
+# Attach required policies for Karpenter nodes
+resource "aws_iam_role_policy_attachment" "karpenter_node_worker" {
   role       = aws_iam_role.karpenter_node.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
 }
 
+resource "aws_iam_role_policy_attachment" "karpenter_node_cni" {
+  role       = aws_iam_role.karpenter_node.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
 
-resource "aws_iam_role_policy_attachment" "node_ecr" {
+resource "aws_iam_role_policy_attachment" "karpenter_node_ecr" {
   role       = aws_iam_role.karpenter_node.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
+resource "aws_iam_role_policy_attachment" "karpenter_node_ssm" {
+  role       = aws_iam_role.karpenter_node.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+# Instance profile required for EC2 instances
+resource "aws_iam_instance_profile" "karpenter_node_instance_profile" {
+  name = "KarpenterNodeInstanceProfile-${var.cluster_name}"
+  role = aws_iam_role.karpenter_node.name
+}
 
 
 # bare minimum requirement of eks

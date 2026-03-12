@@ -46,12 +46,12 @@ variable "enable_nat_gateway" {
 # variable "vpc_id" {
 #   type = string
 # }
-variable "aws_access_key" {
-  type = string
-}
-variable "aws_secret_key" {
-  type = string
-}
+// variable "aws_access_key" {
+//   type = string
+// }
+// variable "aws_secret_key" {
+//   type = string
+// }
 
 # variable "disk_size" {
 #   type = number

@@ -16,6 +16,7 @@ resource "aws_internet_gateway" "internet_gateway" {
 
   tags = {
     mode = "precta"
+   
   }
 }
 
@@ -33,7 +34,7 @@ tags = {
   mode = "precta"
   "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   "kubernetes.io/role/elb" = "1" #why we use this tag? it is for aws to identify this subnet for load balancer and “This subnet is allowed for Public LoadBalancers”
-   "karpenter.sh/discovery" = var.cluster_name
+  "karpenter.sh/discovery" = var.cluster_name
 }
 
 }
@@ -152,4 +153,15 @@ resource "aws_route_table_association" "private_nat_az1" {
 resource "aws_route_table_association" "private_nat_az2" {
   subnet_id      = aws_subnet.private_subnet_az2.id
   route_table_id = aws_route_table.private_route_table.id
+}
+
+
+#security group for KARPENTER
+resource "aws_security_group" "karpenter_nodes" {
+  name   = "${var.cluster_name}-karpenter-sg"
+  vpc_id = aws_vpc.precta.id
+
+  tags = {
+    "karpenter.sh/discovery" = var.cluster_name
+  }
 }

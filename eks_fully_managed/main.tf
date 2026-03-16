@@ -25,6 +25,8 @@ module "precta" {
   max_size             = var.max_size
   instance_type        = ["t3.medium", "t3.large"]
   usage_label          = "precta"
+ 
+
 }
 
 

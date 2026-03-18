@@ -23,9 +23,9 @@ module "precta" {
   nodegroup_subnet_ids = [module.vpc.private_subnet_az1, module.vpc.private_subnet_az2]
   min_size             = var.min_size
   max_size             = var.max_size
-  instance_type        = ["t3.medium", "t3.large"]
+  instance_type        = ["m7i-flex.large", "c7i-flex.large"]
   usage_label          = "precta"
- 
+
 
 }
 

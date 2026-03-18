@@ -105,7 +105,9 @@ resource "aws_iam_policy" "karpenter_controller" {
            "iam:RemoveRoleFromInstanceProfile",
            "iam:DeleteInstanceProfile",
            "eks:DescribeCluster",
-           "pricing:GetProducts"
+           "pricing:GetProducts",
+           "iam:ListInstanceProfiles",
+           "iam:GetInstanceProfile"
         ]
         Resource = "*"
       }
@@ -136,6 +138,8 @@ resource "aws_iam_role" "karpenter_node" {
 
   tags = {
     mode = "precta"
+    "karpenter.sh/discovery" = var.cluster_name
+
   }
 }
 

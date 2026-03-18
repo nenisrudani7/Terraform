@@ -30,7 +30,7 @@ variable "min_size" {
 variable "instance_type" {
   type        = list(string)
   description = "List of instance types for the node group"
-  default     = ["m6a.large", "m6a.xlarge", "m5.large", "m5.xlarge"]
+
 }
 
 
